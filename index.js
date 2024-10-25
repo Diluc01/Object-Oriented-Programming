@@ -26,6 +26,7 @@ adventurer.inventory.forEach((item) => {
 
 //part 2
 class Character {
+  static MAX_HEALTH = 100;
   constructor(name) {
     this.name = name;
     this.health = 100;
@@ -46,18 +47,19 @@ robin.companion.companion.type = "Flea";
 robin.companion.companion.inventory = ["small hat", "sunglasses"];
 
 class Adventurer extends Character {
+  static ROLES = ["Fighter", "Healer", "Wizard"];
+
   constructor(name, role) {
     super(name);
-    // Adventurers have specialized roles.
     this.role = role;
-    // Every adventurer starts with a bed and 50 gold coins.
     this.inventory.push("bedroll", "50 gold coins");
   }
-  // Adventurers have the ability to scout ahead of them.
   scout() {
     console.log(`${this.name} is scouting ahead...`);
     super.roll();
   }
+
+  duel(Adventurer) {}
 }
 
 class Companion extends Character {
@@ -71,3 +73,22 @@ class Companion extends Character {
     super.roll();
   }
 }
+class AdventurerFactory {
+  constructor(role) {
+    this.role = role;
+    this.adventurers = [];
+  }
+  generate(name) {
+    const newAdventurer = new Adventurer(name, this.role);
+    this.adventurers.push(newAdventurer);
+  }
+  findByIndex(index) {
+    return this.adventurers[index];
+  }
+  findByName(name) {
+    return this.adventurers.find((a) => a.name === name);
+  }
+}
+
+const healers = new AdventurerFactory("Healer");
+const robin = healers.generate("Robin");
